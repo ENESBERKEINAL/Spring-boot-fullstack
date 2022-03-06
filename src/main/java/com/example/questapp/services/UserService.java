@@ -9,13 +9,12 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    UserRepository userRepository;
 
+    UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -25,7 +24,7 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
-    public User getOneUser(Long userId) {
+    public User getOneUserById(Long userId) {
         return userRepository.findById(userId).orElse(null);
     }
 

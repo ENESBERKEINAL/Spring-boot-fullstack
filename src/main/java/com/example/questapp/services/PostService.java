@@ -13,7 +13,6 @@ import java.util.Optional;
 @Service
 public class PostService {
 
-
     private PostRepository postRepository;
     private UserService userService;
 
@@ -36,7 +35,7 @@ public class PostService {
     }
 
     public Post createOnePost(PostCreateRequest newPostRequest) {
-        User user = userService.getOneUser(newPostRequest.getUserId());
+        User user = userService.getOneUserById(newPostRequest.getUserId());
         if(user == null)
             return null;
         Post toSave = new Post();

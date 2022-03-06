@@ -31,7 +31,7 @@ public class UserController {
     @GetMapping("/{userId}")
     public User getUserById(@PathVariable Long userId){
         //TODO custom exception
-        return userService.getOneUser(userId);
+        return userService.getOneUserById(userId);
     }
 
     @PutMapping("/{userId}")
