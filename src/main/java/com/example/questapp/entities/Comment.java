@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Data
 public class Comment {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
 
