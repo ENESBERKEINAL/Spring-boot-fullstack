@@ -1,11 +1,14 @@
 package com.example.questapp.services;
 
+import com.example.questapp.entities.Like;
 import com.example.questapp.entities.Post;
 import com.example.questapp.entities.User;
 import com.example.questapp.repos.PostRepository;
 import com.example.questapp.requests.PostCreateRequest;
 import com.example.questapp.requests.PostUpdateRequest;
+import com.example.questapp.responses.LikeResponse;
 import com.example.questapp.responses.PostResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +20,16 @@ public class PostService {
 
     private PostRepository postRepository;
     private UserService userService;
+    private LikeService likeService;
 
     public PostService(PostRepository postRepository,UserService userService) {
         this.postRepository = postRepository;
         this.userService = userService;
+    }
+
+    @Autowired
+    public void setLikeService(LikeService likeService){
+        this.likeService = likeService;
     }
 
 
@@ -31,7 +40,9 @@ public class PostService {
         }else{
             list = postRepository.findAll();
         }
-        return list.stream().map(p -> new PostResponse(p)).collect(Collectors.toList());
+        return list.stream().map(p -> {
+            List<LikeResponse > likes = likeService.getAllLikesWithParam(Optional.ofNullable(null),Optional.of(p.getId()));
+            return new PostResponse(p,likes);}).collect(Collectors.toList());
     }
 
     public Post getPostById(Long postId) {
@@ -47,7 +58,7 @@ public class PostService {
         toSave.setText(newPostRequest.getText());
         toSave.setTitle(newPostRequest.getTitle());
         toSave.setUser(user);
-        return postRepository.save(toSave);
+         return postRepository.save(toSave);
     }
 
     public Post updatePostById(Long postId, PostUpdateRequest updatePost) {
